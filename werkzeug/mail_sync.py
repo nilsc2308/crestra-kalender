@@ -11,7 +11,7 @@ Aufruf:  python3 -I werkzeug/mail_sync.py           (sortieren + Termine)
 
 Zugang: Mail-Passwort im macOS-Schlüsselbund (imap.strato.de), Supabase-service-key in ~/.config/crestra.
 """
-import email, imaplib, json, re, subprocess, sys, urllib.request, urllib.error
+import email, html, imaplib, json, re, subprocess, sys, urllib.request, urllib.error
 from datetime import datetime
 from email.header import decode_header, make_header
 from pathlib import Path
@@ -140,11 +140,11 @@ def termine_lesen(m):
     return list(stand.values())
 
 
-def sb(methode, pfad, daten=None):
+def sb(methode, pfad, daten=None, prefer="return=representation"):
     req = urllib.request.Request(SB_URL + "/rest/v1/" + pfad, method=methode,
                                  data=json.dumps(daten).encode() if daten is not None else None,
                                  headers={"apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY,
-                                          "Content-Type": "application/json", "Prefer": "return=representation"})
+                                          "Content-Type": "application/json", "Prefer": prefer})
     with urllib.request.urlopen(req, timeout=30) as r:
         body = r.read()
         return json.loads(body) if body else None
@@ -183,14 +183,110 @@ def eintragen(termine):
     print(f"  {neu} neu, {geaendert} geändert")
 
 
+# ---------- Postfach-Spiegel für die App ----------
+
+SPIEGEL_ORDNER = ["INBOX", "Bewerbungen", "Indeed", "Plattformen", "Google Unternehmensprofil", "GitHub"]
+TAGE = 45
+WICHTIGE_WOERTER = re.compile(r"rechnung|zahlung|mahnung|vertrag|kündig|angebot|auftrag|anfrage|termin|rückruf|frage", re.I)
+
+
+def roh_text(msg):
+    teile_plain, teile_html = [], []
+    for p in msg.walk():
+        if p.get_content_maintype() == "multipart" or p.get_filename():
+            continue
+        try:
+            inhalt = p.get_payload(decode=True).decode(p.get_content_charset() or "utf-8", "ignore")
+        except Exception:
+            continue
+        if p.get_content_type() == "text/plain":
+            teile_plain.append(inhalt)
+        elif p.get_content_type() == "text/html":
+            teile_html.append(inhalt)
+    if teile_plain:
+        t = "\n".join(teile_plain)
+    else:
+        h = "\n".join(teile_html)
+        h = re.sub(r"(?is)<(style|script|head).*?</\1>", "", h)
+        h = re.sub(r"(?i)<br\s*/?>|</p>|</div>|</tr>|</h\d>", "\n", h)
+        t = html.unescape(re.sub(r"<[^>]+>", " ", h))
+    t = re.sub("[\u00ad\u034f\u061c\u115f\u1160\u17b4\u17b5\u180e\u200b-\u200f\u2028-\u202f\u2060-\u206f\ufeff]", "", t)
+    t = re.sub("[ \t\u00a0]+", " ", t)
+    t = re.sub(r"(?m)^ +| +$", "", t)
+    indeed = re.search(r"Sie haben eine neue Nachricht von [^\n]+\n+(.*?)\n+(?:Selbstst\u00e4ndiger|Antworten\b)", t, re.S)
+    if indeed:
+        return indeed.group(1).strip()[:8000]
+    t = re.sub(r"\n\s*\n\s*(\n\s*)+", "\n\n", t).strip()
+    # zitierte Vorgänger-Mails abschneiden
+    t = re.split(r"\n(?:Am .{5,80} schrieb .{0,80}:|On .{5,80} wrote:|-{3,} ?(?:Original|Ursprüngliche).{0,30}-{3,}|Von: .+\nGesendet: )", t)[0]
+    return t.strip()[:8000]
+
+
+def einordnen(ordner, adresse, betreff, kopf_liste):
+    """→ (kategorie, wichtig)"""
+    a = adresse.lower()
+    if ordner == "Bewerbungen":
+        if re.search(r"Neue Bewerbung", betreff):
+            return "bewerbung", False  # Hinweis auf neue Bewerbung – steht in der Rubrik „Neue Bewerbungen“
+        return "nachricht", True     # Bewerber hat geschrieben → braucht Antwort
+    if ordner in ("Indeed", "Plattformen", "Google Unternehmensprofil", "GitHub"):
+        return "benachrichtigung", bool(re.search(r"zahlung|rechnung|abgelehnt|gesperrt|appeal", betreff, re.I)) and "indeed" in a
+    # Posteingang: alles, was keiner Regel zugeordnet wurde
+    if re.search(r"rechnung|zahlung|mahnung|invoice|beleg", betreff, re.I):
+        return "rechnung", True
+    if kopf_liste or re.search(r"no-?reply|newsletter|news@|info@.*mailing", a):
+        return "benachrichtigung", False
+    return "kontakt", True
+
+
+def mails_spiegeln(m):
+    import hashlib
+    seit = (datetime.now(BERLIN).date().toordinal() - TAGE)
+    seit_imap = datetime.fromordinal(seit).strftime("%d-%b-%Y")
+    zeilen = []
+    for box in SPIEGEL_ORDNER:
+        if m.select(q(box), readonly=True)[0] != "OK":
+            continue
+        _, d = m.search(None, "SINCE", seit_imap)
+        for i in d[0].split():
+            _, r = m.fetch(i, "(BODY.PEEK[])")
+            msg = email.message_from_bytes(r[0][1])
+            mid = (msg.get("Message-ID") or "").strip() or (kopf(msg, "From") + kopf(msg, "Date") + kopf(msg, "Subject"))
+            name, adr = email.utils.parseaddr(kopf(msg, "From"))
+            reply = email.utils.parseaddr(kopf(msg, "Reply-To"))[1] or adr
+            betreff = re.sub(r"\s+", " ", kopf(msg, "Subject"))
+            try:
+                datum = email.utils.parsedate_to_datetime(msg.get("Date")).isoformat()
+            except Exception:
+                continue
+            text = roh_text(msg)
+            kat, wichtig = einordnen(box, adr, betreff, bool(msg.get("List-Unsubscribe")) and box == "INBOX")
+            zeilen.append(dict(
+                id=hashlib.sha1(mid.encode()).hexdigest(), ordner="Posteingang" if box == "INBOX" else box,
+                von_name=name or adr, von_adresse=adr, antwort_an=reply, betreff=betreff or "(ohne Betreff)",
+                datum=datum, vorschau=re.sub(r"\s+", " ", text)[:220], text=text, kategorie=kat, wichtig=wichtig))
+    if PROBE:
+        for z in sorted(zeilen, key=lambda z: z["datum"])[-15:]:
+            print(f"  {'★' if z['wichtig'] else ' '} {z['kategorie']:16} {z['von_name'][:28]:28} {z['betreff'][:60]}")
+        print(f"  {len(zeilen)} Mails, davon {sum(z['wichtig'] for z in zeilen)} wichtig")
+        return
+    eindeutig = {z["id"]: z for z in zeilen}
+    zeilen = list(eindeutig.values())
+    for k in range(0, len(zeilen), 100):
+        sb("POST", "mails?on_conflict=id", zeilen[k:k + 100], prefer="resolution=merge-duplicates,return=minimal")
+    print(f"  {len(zeilen)} Mails gespiegelt, davon {sum(z['wichtig'] for z in zeilen)} wichtig")
+
+
 if __name__ == "__main__":
     m = anmelden()
     print("Mails sortieren" + (" (Probe)" if PROBE else ""))
     sortieren(m)
     print("Termine aus Indeed-Mails")
     termine = termine_lesen(m)
-    m.logout()
+    print("Postfach für die App spiegeln")
     try:
+        mails_spiegeln(m)
+        m.logout()
         eintragen(termine)
     except urllib.error.URLError as e:
         sys.exit(f"Supabase nicht erreichbar ({e}). Ist das Projekt pausiert?")

@@ -182,6 +182,98 @@ label.f{display:grid;gap:5px;font-size:13px;font-weight:700;color:var(--ink-2)}
 .check{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:600}
 .warn{font-size:13px;color:var(--amber);background:var(--amber-soft);border-radius:10px;padding:8px 12px}
 
+/* App-Leiste */
+.appbar{position:sticky;top:0;z-index:8;display:flex;align-items:center;gap:14px;margin:0 -16px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;
+  background:color-mix(in srgb,var(--ground) 86%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.appbar .brand{margin-right:0}
+.tabs{display:flex;gap:4px;margin-right:auto}
+.tabs button{position:relative;display:flex;align-items:center;gap:7px;border:0;background:none;padding:8px 12px;border-radius:10px;font-weight:700;font-size:14.5px;color:var(--ink-3);cursor:pointer}
+.tabs button[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(17,23,37,.08)}
+.tabs svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabs__badge{position:absolute;top:3px;left:24px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-style:normal;font-size:10.5px;font-weight:800;display:grid;place-items:center;font-family:var(--mono)}
+.btn--add span{font-size:20px;line-height:0;font-weight:500}
+.btn--add em{font-style:normal}
+@media (max-width:700px){
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:9;margin:0;justify-content:space-around;gap:0;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));
+    background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid var(--line)}
+  .tabs button{flex-direction:column;gap:3px;font-size:11.5px;padding:6px 14px;flex:1}
+  .tabs button[aria-current="page"]{background:none;box-shadow:none;color:var(--accent)}
+  .tabs svg{width:24px;height:24px}
+  .tabs__badge{left:calc(50% + 6px);top:2px}
+  .appbar{justify-content:space-between;backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--ground)}
+  .btn--add em{display:none}
+  .btn--add{width:40px;height:40px;padding:0;border-radius:12px}
+}
+.filterbox{position:relative}
+.filterbox summary{list-style:none}
+.filterbox summary::-webkit-details-marker{display:none}
+.filterbox[open] .filters{position:absolute;z-index:6;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px;display:grid;gap:6px;min-width:220px;margin:0}
+#kalHead{position:static;padding-top:16px}
+
+/* Heute */
+.today{display:grid;gap:26px;padding-top:18px}
+@media (min-width:980px){.today{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start;gap:32px}}
+.hello small{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.hello h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,42px);letter-spacing:-.035em;line-height:1.05;margin:6px 0 0;text-wrap:balance}
+.hello h1 em{font-style:normal;color:var(--accent)}
+.col{display:grid;gap:22px;min-width:0}
+.next{background:var(--ink);color:var(--surface);border-radius:22px;padding:20px;display:grid;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.next::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 55%,transparent),transparent 70%);opacity:.55;pointer-events:none}
+.next__top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:700;color:color-mix(in srgb,var(--surface) 70%,transparent)}
+.next__live{display:inline-flex;align-items:center;gap:7px;background:color-mix(in srgb,var(--surface) 14%,transparent);color:var(--surface);border-radius:999px;padding:3px 10px}
+.next__live i{width:7px;height:7px;border-radius:50%;background:#4fd08c;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.next h2{font-family:var(--display);font-size:clamp(24px,5vw,30px);letter-spacing:-.02em;line-height:1.1;margin:0;overflow-wrap:anywhere}
+.next__meta{font-family:var(--mono);font-size:14px;color:color-mix(in srgb,var(--surface) 75%,transparent)}
+.next .row{position:relative;z-index:1}
+.next .btn{border-color:color-mix(in srgb,var(--surface) 25%,transparent);background:transparent;color:var(--surface)}
+.next .btn--primary{background:var(--surface);color:var(--ink);border-color:var(--surface)}
+.free{background:var(--surface);border:1px dashed var(--line-2);border-radius:22px;padding:22px;color:var(--ink-2)}
+.free b{display:block;font-family:var(--display);font-size:20px;color:var(--ink);margin-bottom:4px}
+.sec{display:grid;gap:10px}
+.sec__h{display:flex;align-items:baseline;gap:10px;margin:0}
+.sec__h h2{font-family:var(--display);font-size:18px;margin:0;letter-spacing:-.01em}
+.sec__h small{color:var(--ink-3);font-weight:600;font-size:13px}
+.sec__h button{margin-left:auto}
+.timeline{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tl{display:grid;grid-template-columns:54px 14px minmax(0,1fr) auto;gap:0 12px;align-items:center;padding:11px 14px;cursor:pointer;position:relative}
+.tl+.tl{border-top:1px solid var(--line)}
+.tl:hover{background:var(--surface-2)}
+.tl__t{font-family:var(--mono);font-size:13.5px;font-weight:600}
+.tl__d{width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px var(--cs)}
+.tl__n{min-width:0}
+.tl__n b{display:block;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl__n span{display:block;font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl.is-past{opacity:.5}
+.tl.is-past .tl__d{background:var(--ink-3);box-shadow:none}
+.tl.is-next{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
+.tl__ok{font-size:12px;font-weight:700;color:var(--green)}
+.mlist{display:grid;gap:8px}
+.mail{display:grid;grid-template-columns:38px minmax(0,1fr);gap:4px 12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;text-align:left;width:100%;position:relative}
+.mail:hover{border-color:var(--line-2)}
+.mail__av{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:13px;color:var(--c);background:var(--cs);grid-row:span 2}
+.mail__top{display:flex;gap:8px;align-items:baseline;min-width:0}
+.mail__top b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mail__top time{margin-left:auto;font-size:12px;color:var(--ink-3);white-space:nowrap;font-family:var(--mono)}
+.mail__s{font-size:13.5px;color:var(--ink-2);min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mail.is-new::before{content:"";position:absolute;left:5px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--accent)}
+.mail.is-done{opacity:.55}
+.m-nachricht,.m-kontakt{--c:var(--violet);--cs:var(--violet-soft)}
+.m-rechnung{--c:var(--amber);--cs:var(--amber-soft)}
+.m-bewerbung{--c:var(--green);--cs:var(--green-soft)}
+.m-benachrichtigung{--c:var(--ink-3);--cs:var(--grey-soft)}
+.stat{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;width:100%;text-align:left}
+.stat b{font-family:var(--display);font-size:26px;line-height:1;color:var(--green)}
+.stat span{font-size:14px;color:var(--ink-2)}
+.stat em{margin-left:auto;font-style:normal;color:var(--ink-3);font-size:20px}
+.allclear{display:flex;align-items:center;gap:10px;padding:14px;border-radius:16px;background:var(--green-soft);color:var(--green);font-weight:700}
+.mailtext{font-family:var(--body);white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.55;background:var(--surface-2);border-radius:14px;padding:14px;max-height:46vh;overflow:auto;margin:0}
+.ptabs{display:flex;margin-top:18px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.ptabs::-webkit-scrollbar{display:none}
+.ptabs button{white-space:nowrap}
+.ptabs button .mono{font-size:12px;opacity:.75;margin-left:2px}
+
 /* Login */
 .login{position:fixed;inset:0;z-index:30;background:var(--ground);display:grid;place-items:center;padding:24px}
 .login__card{width:min(380px,100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:26px 22px;display:grid;gap:14px}
@@ -215,9 +307,17 @@ label.f{display:grid;gap:5px;font-size:13px;font-weight:700;color:var(--ink-2)}
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
+  <header class="appbar">
+    <div class="brand"><b>crestra</b></div>
+    <nav class="tabs" id="tabs" aria-label="Bereiche">
+      <button type="button" data-tab="heute"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><span>Heute</span></button>
+      <button type="button" data-tab="kalender"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Kalender</span></button>
+      <button type="button" data-tab="postfach"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13.5" rx="3"/><path d="m4 7.5 8 6 8-6"/></svg><span>Postfach</span><i class="tabs__badge" id="mailBadge" hidden></i></button>
+    </nav>
+    <button class="btn btn--primary btn--add" type="button" id="add" aria-label="Neuer Termin"><span aria-hidden="true">+</span><em>Termin</em></button>
+  </header>
+  <header class="top" id="kalHead">
     <div class="top__row">
-      <div class="brand"><b>crestra</b><span>Kalender</span></div>
       <div class="seg" role="group" aria-label="Ansicht">
         <button type="button" data-view="liste" aria-pressed="true">Liste</button>
         <button type="button" data-view="woche" aria-pressed="false">Woche</button>
@@ -230,20 +330,19 @@ label.f{display:grid;gap:5px;font-size:13px;font-weight:700;color:var(--ink-2)}
       <button class="btn" type="button" id="today">Heute</button>
       <button class="btn btn--icon" type="button" id="next" aria-label="Weiter">›</button>
     </div>
-    <div class="filters" id="filters"></div>
+    <details class="filterbox"><summary class="btn btn--sm">Filter</summary><div class="filters" id="filters"></div></details>
   </header>
   <main id="view"><div class="skel"></div><div class="skel"></div><div class="skel"></div></main>
   <div class="foot"><span id="me"></span> · <button type="button" id="logout">Abmelden</button></div>
 </div>
 
-<button class="fab" type="button" id="add"><span>+</span> Termin</button>
 
 <dialog class="sheetdlg" id="dlg"><div class="sheet" id="sheet"></div></dialog>
 <div class="toast" id="toast" role="status"></div>
 
 <div class="login" id="login" hidden>
   <div class="login__card">
-    <div class="brand"><b>crestra</b><span>Kalender</span></div>
+    <div class="brand"><b>crestra</b><span>Team</span></div>
     <p id="loginIntro">Melde dich mit deiner E-Mail und deinem Passwort an.</p>
     <form id="loginForm">
       <input id="loginEmail" type="email" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="E-Mail" aria-label="E-Mail" required>
@@ -271,14 +370,16 @@ const st = {
   view: "liste", anchor: startOfDay(new Date()), sel: null, alt: false,
   arten: new Set(Object.keys(ARTEN)), zeigeAbgesagt: false,
   termine: [], team: [], me: null,
+  tab: "heute", mails: [], mailFilter: "offen",
 };
 try {
   const s = JSON.parse(localStorage.getItem("kal-pref") || "{}");
   if (s.view) st.view = s.view;
   if (Array.isArray(s.arten)) st.arten = new Set(s.arten);
   if (typeof s.zeigeAbgesagt === "boolean") st.zeigeAbgesagt = s.zeigeAbgesagt;
+  if (s.tab) st.tab = s.tab;
 } catch (e) {}
-const savePref = () => { try { localStorage.setItem("kal-pref", JSON.stringify({ view: st.view, arten: [...st.arten], zeigeAbgesagt: st.zeigeAbgesagt })); } catch (e) {} };
+const savePref = () => { try { localStorage.setItem("kal-pref", JSON.stringify({ tab: st.tab, view: st.view, arten: [...st.arten], zeigeAbgesagt: st.zeigeAbgesagt })); } catch (e) {} };
 
 /* ---------- Datum ---------- */
 function startOfDay(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
@@ -309,11 +410,13 @@ const TEAMFARBEN = ["#2446e8", "#d3342c", "#12804a", "#b06a00", "#6a3ed0"];
 const teamColor = (m) => m.farbe || TEAMFARBEN[st.team.indexOf(m) % TEAMFARBEN.length];
 
 async function loadAll() {
-  const [{ data: t, error: e1 }, { data: team, error: e2 }] = await Promise.all([
+  const [{ data: t, error: e1 }, { data: team, error: e2 }, { data: mails }] = await Promise.all([
     sb.from("termine").select("*").order("beginn"),
     sb.from("kalender_team").select("user_id,name,farbe").order("created_at"),
+    sb.from("mails").select("id,ordner,von_name,von_adresse,antwort_an,betreff,datum,vorschau,kategorie,wichtig,gelesen,erledigt").order("datum", { ascending: false }).limit(400),
   ]);
   if (e1 || e2) throw e1 || e2;
+  st.mails = (mails || []).map((m) => Object.assign(m, { d: new Date(m.datum) }));
   st.termine = t.map(parse).sort((a, b) => a.b - b.b);
   st.team = team;
   badge();
@@ -329,6 +432,14 @@ function live() {
     if (p.eventType === "DELETE") st.termine = st.termine.filter((t) => t.id !== p.old.id);
     else upsertLocal(p.new);
     badge(); render();
+  }).on("postgres_changes", { event: "*", schema: "public", table: "mails" }, (p) => {
+    if (p.eventType === "DELETE") { st.mails = st.mails.filter((m) => m.id !== p.old.id); }
+    else {
+      const row = Object.assign(p.new, { d: new Date(p.new.datum) }); delete row.text;
+      const i = st.mails.findIndex((m) => m.id === row.id);
+      if (i >= 0) st.mails[i] = row; else { st.mails.push(row); st.mails.sort((a, b) => b.d - a.d); }
+    }
+    render();
   }).subscribe((status) => { if (status === "SUBSCRIBED" && st.termine.length) loadAll().then(render, () => {}); });
 }
 function badge() {
@@ -457,9 +568,121 @@ function renderMonat() {
   }
   return html;
 }
+/* ---------- Heute ---------- */
+const nice = (n) => (n || "").split(/\s+/).map((w) => (w.length > 2 && w === w.toUpperCase() ? w[0] + w.slice(1).toLowerCase() : w)).join(" ");
+function until(d) {
+  const m = Math.round((d - new Date()) / 6e4);
+  if (m <= 0) return "jetzt";
+  if (m < 60) return `in ${m} Min.`;
+  const h = Math.floor(m / 60), r = m % 60;
+  return h < 24 ? `in ${h} Std.${r ? " " + r + " Min." : ""}` : relDay(d) || fDay(d);
+}
+function ago(d) {
+  const m = Math.round((new Date() - d) / 6e4);
+  if (m < 60) return m <= 1 ? "gerade" : m + " Min.";
+  if (sameDay(d, new Date())) return fTime(d);
+  if (relDay(d) === "Gestern") return "gestern";
+  return d.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
+}
+const kurz = (b) => (b || "").replace(/\s*[–-]\s*Selbstst[äa]ndiger.*$/i, "").replace(/\s*für die Stelle als.*$/i, "").replace(/^\[Wichtig\]\s*/, "").trim() || b;
+const offen = () => st.mails.filter((m) => m.wichtig && !m.erledigt);
+const neueBewerbungen = () => st.mails.filter((m) => m.kategorie === "bewerbung" && !m.erledigt);
+function mailRow(m) {
+  const n = nice(m.von_name);
+  return `<button type="button" class="mail m-${m.kategorie}${m.gelesen ? "" : " is-new"}${m.erledigt ? " is-done" : ""}" data-mail="${m.id}">
+    <span class="mail__av">${esc(initials(n))}</span>
+    <span class="mail__top"><b>${esc(n)}</b><time>${ago(m.d)}</time></span>
+    <span class="mail__s">${m.kategorie === "nachricht" ? "" : `<strong>${esc(kurz(m.betreff))}</strong> – `}${esc(m.vorschau)}</span></button>`;
+}
+function renderHeute() {
+  const now = new Date(), heute = st.termine.filter((t) => sameDay(t.b, now) && t.status !== "abgesagt" && st.arten.has(t.art));
+  const kommend = st.termine.filter((t) => t.status === "geplant" && t.e > now).sort((a, b) => a.b - b.b);
+  const next = kommend[0];
+  const rest = heute.filter((t) => t.status === "geplant" && t.e > now).length;
+  const titel = !heute.length ? "Heute ist <em>frei</em>." : rest ? `Noch <em>${rest}</em> ${rest === 1 ? "Termin" : "Termine"} heute.` : "Für heute <em>alles erledigt</em>.";
+  const laeuft = next && next.b <= now;
+  const nextCard = next ? `<article class="next">
+      <div class="next__top"><span>${laeuft ? `<span class="next__live"><i></i>Läuft gerade</span>` : "Als Nächstes · " + until(next.b)}</span><span>${esc(ARTEN[next.art])}</span></div>
+      <h2>${esc(nice(next.person) || next.titel)}</h2>
+      <div class="next__meta">${relDay(next.b) && relDay(next.b) !== "Heute" ? relDay(next.b) + ", " : sameDay(next.b, now) ? "" : fDay(next.b) + ", "}${fTime(next.b)}–${fTime(next.e)}${next.telefon ? " · " + esc(next.telefon) : ""}</div>
+      <div class="row">${next.telefon ? `<a class="btn btn--primary" href="tel:${esc(next.telefon.replace(/\s/g, ""))}">Anrufen</a>` : next.ort && /^https?:/.test(next.ort) ? `<a class="btn btn--primary" href="${esc(next.ort)}" target="_blank" rel="noopener">Zum Video</a>` : ""}
+        <button class="btn" type="button" data-done="${next.id}">Erledigt</button><button class="btn" type="button" data-id="${next.id}">Details</button></div>
+    </article>` : `<div class="free"><b>Keine Termine geplant.</b>Neue Gespräche aus Indeed erscheinen hier automatisch.</div>`;
+  const tl = heute.length ? `<section class="sec"><div class="sec__h"><h2>Tagesablauf</h2><small>${heute.length} ${heute.length === 1 ? "Termin" : "Termine"}</small></div>
+    <ol class="timeline">${heute.map((t) => {
+      const past = t.e <= now || t.status === "erledigt";
+      return `<li class="tl k-${t.art}${past ? " is-past" : ""}${next && t.id === next.id ? " is-next" : ""}" data-id="${t.id}">
+        <span class="tl__t">${t.ganztag ? "ganzt." : fTime(t.b)}</span><span class="tl__d"></span>
+        <span class="tl__n"><b>${esc(nice(t.person) || t.titel)}</b><span>${esc(ARTEN[t.art])}${member(t.zustaendig) ? " · " + esc(member(t.zustaendig).name) : ""}</span></span>
+        ${t.status === "erledigt" ? `<span class="tl__ok">✓</span>` : t.telefon && !past ? `<a class="btn btn--sm" href="tel:${esc(t.telefon.replace(/\s/g, ""))}" data-stop>Anrufen</a>` : ""}</li>`;
+    }).join("")}</ol></section>` : "";
+  const morgen = st.termine.filter((t) => sameDay(t.b, addDays(now, 1)) && t.status === "geplant");
+  const mo = morgen.length ? `<section class="sec"><div class="sec__h"><h2>Morgen</h2><small>${morgen.length} ${morgen.length === 1 ? "Termin" : "Termine"}</small></div>
+    <ol class="timeline">${morgen.map((t) => `<li class="tl k-${t.art}" data-id="${t.id}"><span class="tl__t">${fTime(t.b)}</span><span class="tl__d"></span><span class="tl__n"><b>${esc(nice(t.person) || t.titel)}</b><span>${esc(ARTEN[t.art])}</span></span><span></span></li>`).join("")}</ol></section>` : "";
+  const o = offen(), nb = neueBewerbungen();
+  const mails = `<section class="sec"><div class="sec__h"><h2>Braucht Antwort</h2><small>${o.length || ""}</small>${o.length > 4 ? `<button class="btn btn--sm btn--ghost" type="button" data-goto="postfach">Alle</button>` : ""}</div>
+      ${o.length ? `<div class="mlist">${o.slice(0, 4).map(mailRow).join("")}</div>` : `<div class="allclear">✓ Keine offenen Mails</div>`}
+      ${nb.length ? `<button type="button" class="stat" data-goto="bewerbungen"><b>${nb.length}</b><span>${nb.length === 1 ? "neue Bewerbung" : "neue Bewerbungen"} über Indeed</span><em>›</em></button>` : ""}
+    </section>`;
+  return `<div class="today">
+    <div class="col"><div class="hello"><small>${fDay(now)}</small><h1>${titel}</h1></div>${nextCard}${tl}${mo}</div>
+    <div class="col">${mails}</div></div>`;
+}
+
+/* ---------- Postfach ---------- */
+const MF = { offen: "Braucht Antwort", bewerbungen: "Neue Bewerbungen", alle: "Alle", erledigt: "Erledigt" };
+function renderPostfach() {
+  const f = st.mailFilter;
+  let list = f === "offen" ? offen() : f === "bewerbungen" ? neueBewerbungen() : f === "erledigt" ? st.mails.filter((m) => m.erledigt) : st.mails;
+  const tabs = `<div class="ptabs seg">${Object.entries(MF).map(([k, v]) => {
+    const n = k === "offen" ? offen().length : k === "bewerbungen" ? neueBewerbungen().length : 0;
+    return `<button type="button" data-mf="${k}" aria-pressed="${f === k}">${v}${n ? ` <span class="mono">${n}</span>` : ""}</button>`;
+  }).join("")}</div>`;
+  if (!list.length) return tabs + `<div class="empty">${f === "offen" ? "Alles beantwortet. 🎉" : "Hier ist nichts."}</div>`;
+  let html = "", last = "";
+  list.slice(0, 150).forEach((m) => {
+    const k = dayKey(m.d);
+    if (k !== last) { html += `${last ? "</div></section>" : ""}<section class="day"><h2 class="day__h"><span>${relDay(m.d) ? relDay(m.d) + ", " : ""}${fDay(m.d)}</span></h2><div class="mlist">`; last = k; }
+    html += mailRow(m);
+  });
+  return tabs + html + "</div></section>";
+}
+async function showMail(id) {
+  const m = st.mails.find((x) => x.id === id);
+  if (!m) return;
+  sheet.innerHTML = `<div class="sheet__head"><h2>${esc(kurz(m.betreff))}</h2><button class="btn btn--ghost btn--icon" type="button" data-close aria-label="Schließen">✕</button></div>
+    <dl class="facts"><div><dt>Von</dt><dd>${esc(nice(m.von_name))}${m.von_adresse && !/indeedemail/.test(m.von_adresse) ? `<br><span class="mono" style="font-size:13px">${esc(m.von_adresse)}</span>` : /indeedemail/.test(m.von_adresse) ? "<br><small>über Indeed</small>" : ""}</dd></div>
+    <div><dt>Wann</dt><dd>${fDay(m.d)}, ${fTime(m.d)} Uhr</dd></div><div><dt>Ordner</dt><dd>${esc(m.ordner.replace(".", " / "))}</dd></div></dl>
+    <pre class="mailtext" id="mailtext">Lädt …</pre>
+    <div class="row"><a class="btn btn--primary" href="mailto:${esc(m.antwort_an || m.von_adresse)}?subject=${encodeURIComponent((/^(re|aw):/i.test(m.betreff) ? "" : "Re: ") + m.betreff)}">Antworten</a>
+      <button class="btn" type="button" data-mdone>${m.erledigt ? "Wieder offen" : "Erledigt"}</button>
+      <button class="btn" type="button" data-mtermin>Termin daraus</button></div>`;
+  sheet.onclick = async (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.close !== undefined) return closeSheet();
+    if (b.dataset.mdone !== undefined) { await markMail(m, { erledigt: !m.erledigt, gelesen: true }); closeSheet(); toast(m.erledigt ? "Erledigt" : "Wieder offen"); }
+    if (b.dataset.mtermin !== undefined) { const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(10, 0, 0, 0); showForm({ id: undefined, titel: "Termin mit " + nice(m.von_name), art: m.kategorie === "nachricht" || m.kategorie === "bewerbung" ? "interview" : "kunde", person: nice(m.von_name), telefon: "", ort: "", notiz: "Aus Mail: " + m.betreff, b: d, e: new Date(d.getTime() + 30 * 6e4), ganztag: false, zustaendig: st.me, _neu: true }); }
+  };
+  openSheet();
+  if (!m.gelesen) markMail(m, { gelesen: true });
+  const { data } = await sb.from("mails").select("text").eq("id", id).single();
+  if ($("mailtext")) $("mailtext").textContent = (data && data.text) || m.vorschau || "(kein Text)";
+}
+async function markMail(m, patch) {
+  Object.assign(m, patch); render();
+  const { error } = await sb.from("mails").update(Object.assign({ bearbeitet_von: st.me }, patch)).eq("id", m.id);
+  if (error) toast("Speichern fehlgeschlagen");
+}
+
 function render() {
-  renderHead();
+  document.querySelectorAll("[data-tab]").forEach((b) => { if (b.dataset.tab === st.tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  const n = offen().filter((m) => !m.gelesen).length || offen().length;
+  $("mailBadge").hidden = !n; $("mailBadge").textContent = n > 99 ? "99+" : n;
+  $("kalHead").hidden = st.tab !== "kalender";
   const v = $("view");
+  if (st.tab === "heute") { v.innerHTML = renderHeute(); return; }
+  if (st.tab === "postfach") { v.innerHTML = renderPostfach(); return; }
+  renderHead();
   const keepScroll = $("wscroll") ? $("wscroll").scrollLeft : null;
   v.innerHTML = st.view === "woche" ? renderWoche() : st.view === "monat" ? renderMonat() : renderListe();
   if (st.view === "woche" && $("wscroll")) {
@@ -521,7 +744,8 @@ function showDetail(id) {
 function openSheet() { if (!dlg.open) dlg.showModal(); sheet.tabIndex = -1; sheet.focus({ preventScroll: true }); }
 
 function showForm(t, preset) {
-  const neu = !t;
+  if (t && t._neu) { preset = t.b; }
+  const neu = !t || !!t._neu;
   const b = t ? t.b : (preset || (() => { const d = new Date(); d.setMinutes(d.getMinutes() < 30 ? 30 : 60, 0, 0); return d; })());
   const e = t ? t.e : new Date(b.getTime() + 30 * 6e4);
   sheet.innerHTML = `
@@ -566,7 +790,7 @@ function showForm(t, preset) {
   });
   f.ende.addEventListener("change", check);
   check();
-  sheet.onclick = (ev) => { if (ev.target.closest("[data-close]")) { t ? showDetail(t.id) : closeSheet(); } };
+  sheet.onclick = (ev) => { if (ev.target.closest("[data-close]")) { t && !neu ? showDetail(t.id) : closeSheet(); } };
   f.onsubmit = async (ev) => {
     ev.preventDefault();
     const v = vals();
@@ -604,8 +828,13 @@ $("filters").onclick = (e) => {
   else st.zeigeAbgesagt = !st.zeigeAbgesagt;
   savePref(); render();
 };
+document.querySelectorAll("[data-tab]").forEach((b) => b.onclick = () => { st.tab = b.dataset.tab; savePref(); render(); scrollTo({ top: 0 }); });
 $("view").addEventListener("click", (e) => {
   if (e.target.closest("[data-stop]")) return;
+  const ml = e.target.closest("[data-mail]"); if (ml) return showMail(ml.dataset.mail);
+  const mf = e.target.closest("[data-mf]"); if (mf) { st.mailFilter = mf.dataset.mf; return render(); }
+  const go = e.target.closest("[data-goto]"); if (go) { st.tab = "postfach"; st.mailFilter = go.dataset.goto === "bewerbungen" ? "bewerbungen" : "offen"; savePref(); render(); return scrollTo({ top: 0 }); }
+  const dn = e.target.closest("[data-done]"); if (dn) return save(dn.dataset.done, { status: "erledigt" }, "Erledigt");
   const nd = e.target.closest("[data-newday]");
   if (nd) { const d = new Date(nd.dataset.newday + "T10:00"); return showForm(null, d); }
   const ev = e.target.closest("[data-id]");
@@ -623,7 +852,7 @@ $("view").addEventListener("click", (e) => {
   }
 });
 $("view").addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches(".ev")) { e.preventDefault(); showDetail(e.target.dataset.id); } });
-$("add").onclick = () => showForm(null, st.view === "monat" && st.sel ? (() => { const d = new Date(st.sel); d.setHours(10); return d; })() : null);
+$("add").onclick = () => showForm(null, st.tab === "kalender" && st.view === "monat" && st.sel ? (() => { const d = new Date(st.sel); d.setHours(10); return d; })() : null);
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden && st.me) loadAll().then(render, () => {}); });
 setInterval(() => { if (!document.hidden && st.me) render(); }, 60e3);
