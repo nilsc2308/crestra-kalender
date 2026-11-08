@@ -1,7 +1,7 @@
 // Service Worker: macht das Kalender installierbar und startet es auch bei schlechtem Netz.
 // Seiten und Code immer zuerst frisch aus dem Netz, bei Funkloch aus dem Speicher.
 // Die Daten selbst kommen live aus Supabase und werden hier nicht angefasst.
-const CACHE = "kalender-v1";
+const CACHE = "kalender-v2";
 const SHELL = ["./", "index.html", "config.js", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
