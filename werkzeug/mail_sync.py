@@ -123,8 +123,7 @@ def termine_lesen(m):
                     uid = g("UID")
                     titel = g("SUMMARY")
                     name = (re.search(r"interview with (.*?) for", titel) or [None, titel])[1].strip()
-                    if name.isupper():
-                        name = name.title()
+                    name = " ".join(w.title() if w.isupper() and len(w) > 2 else w for w in name.split())
                     tel = re.search(r"\[(\+?\d[\d ]{6,})\]", re.sub(r"\s+", " ", text_aus(msg)))
                     eintrag = dict(
                         quelle_id="indeed:" + uid, gesendet=gesendet, abgesagt=(methode == "CANCEL"),
