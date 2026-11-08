@@ -642,7 +642,7 @@ async function login() {
       $("loginSubmit").disabled = true; msg.textContent = "";
       const { data, error } = await sb.auth.signInWithPassword({ email: email.value.trim().toLowerCase(), password: pass.value.trim() });
       $("loginSubmit").disabled = false;
-      if (error) { msg.textContent = /invalid login/i.test(error.message) ? "E-Mail oder Passwort stimmt nicht." : "Anmeldung fehlgeschlagen: " + error.message; return; }
+      if (error) { msg.textContent = /invalid login/i.test(error.message) ? "E-Mail oder Passwort stimmt nicht." : /fetch|network|load failed/i.test(error.message) || !error.status ? "Der Server ist gerade nicht erreichbar – das liegt nicht am Passwort." : "Anmeldung fehlgeschlagen: " + error.message; return; }
       try { localStorage.setItem("kal-email", email.value.trim().toLowerCase()); } catch (e) {}
       box.hidden = true; resolve(data.session);
     };
